@@ -1,5 +1,6 @@
 
-source(here("connect", "keys.R"))
+library(here)
+source(here("utils", "load_packages.R"))
 dobtools::import_scripts(here("utils"))
 
 # Load in data
@@ -13,12 +14,17 @@ fortnite <- fortnite_raw %>%
   ) %>% 
   dobtools::set_col_types(fac_regex = "stream_type|stream_game|channel_status|channel_language",
                           num_regex = "id|channel_views",
-                          datetm_regex = "stream_created_at|channel_created_at|channel_updated_at")
+                          datetm_regex = "_at")
 
 
 # First look at thing of interest
-ggplot(fortnite[1:100, ]) +
-  geom_smooth(aes(fetch_timestamp, channel_views))
+ggplot(fortnite) +
+  geom_smooth(aes(fetch_timestamp_utc, channel_views)) +
+  ggtitle("Fortnite Channel Views over Time") +
+  labs(x = "Fetch Timestamp (UTC)", 
+       y = "Channel Views",
+       subtitle = glue("From {stringr::str_c(range(fortnite$fetch_timestamp_utc), collapse = ' to ')}")) +
+  theme_bw()
 
 
 # Channel info
