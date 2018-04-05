@@ -1,5 +1,7 @@
-library(RMySQL)
+
+source(here("utils", "load_packages.R"))
 source(here("connect", "keys.R"))
+dobtools::import_scripts(here("utils"))
 
 twitch_db_con <- dbConnect(MySQL(),
                            username = twitch_db_username,
