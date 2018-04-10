@@ -37,10 +37,9 @@ channel_id_dict <- fortnite %>%
   select(channel_id, channel_display_name) %>% 
   distinct()
 
-
-
-
-
-
-
-
+fortnite %>% 
+  group_by(user_id) %>% 
+  summarise(
+    sum_viewers = sum(stream_viewers, na.rm = TRUE)
+  ) %>% 
+  arrange(desc(sum_viewers))
